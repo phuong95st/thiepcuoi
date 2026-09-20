@@ -45,16 +45,38 @@ export const image = (() => {
     });
 
     /**
+     * @param {HTMLImageElement} el
+     * @returns {void}
+     */
+    const fallbackImage = (el) => {
+        const directSrc = el.getAttribute('data-src');
+        if (!directSrc) {
+            progress.complete('image');
+            return;
+        }
+
+        el.removeAttribute('data-src');
+        el.onerror = () => progress.complete('image');
+        el.onload = () => {
+            el.width = el.naturalWidth;
+            el.height = el.naturalHeight;
+            el.classList.remove('opacity-0');
+            progress.complete('image');
+        };
+        el.src = directSrc;
+    };
+
+    /**
      * @param {HTMLImageElement} el 
      * @returns {void}
      */
     const getByFetch = (el) => {
         urlCache.push({
             url: el.getAttribute('data-src'),
-            res: (url) => appendImage(el, url),
+            res: (url) => appendImage(el, url).catch(() => fallbackImage(el)),
             rej: (err) => {
                 console.error(err);
-                progress.invalid('image');
+                fallbackImage(el);
             },
         });
     };
@@ -64,7 +86,7 @@ export const image = (() => {
      * @returns {void}
      */
     const getByDefault = (el) => {
-        el.onerror = () => progress.invalid('image');
+        el.onerror = () => fallbackImage(el);
         el.onload = () => {
             el.width = el.naturalWidth;
             el.height = el.naturalHeight;
@@ -74,7 +96,7 @@ export const image = (() => {
         if (el.complete && el.naturalWidth !== 0 && el.naturalHeight !== 0) {
             progress.complete('image');
         } else if (el.complete) {
-            progress.invalid('image');
+            fallbackImage(el);
         }
     };
 

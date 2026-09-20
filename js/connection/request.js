@@ -28,11 +28,11 @@ export const pool = (() => {
     return {
         /**
          * @param {string} name
-         * @returns {Cache}
+         * @returns {Cache|null}
          */
         getInstance: (name) => {
             if (!cachePool || !cachePool.has(name)) {
-                throw new Error(`please init cache first: ${name}`);
+                return null;
             }
 
             return cachePool.get(name);
@@ -42,10 +42,19 @@ export const pool = (() => {
          * @returns {Promise<void>}
          */
         restart: async (name) => {
+            if (!cachePool) {
+                return;
+            }
             cachePool.set(name, null);
             cachePool.delete(name);
-            await window.caches.delete(name);
-            await window.caches.open(name).then((c) => cachePool.set(name, c));
+            if (window.caches) {
+                try {
+                    await window.caches.delete(name);
+                    await window.caches.open(name).then((c) => cachePool.set(name, c));
+                } catch {
+                    // ignore cache restart error
+                }
+            }
         },
         /**
          * @param {function} callback
@@ -53,12 +62,17 @@ export const pool = (() => {
          * @returns {void}
          */
         init: (callback, lists = []) => {
-            if (!window.isSecureContext) {
-                throw new Error('this application required secure context');
+            cachePool = new Map();
+            if (!window.isSecureContext || !window.caches) {
+                callback();
+                return;
             }
 
-            cachePool = new Map();
-            Promise.all(lists.concat([cacheRequest]).map((v) => window.caches.open(v).then((c) => cachePool.set(v, c)))).then(() => callback());
+            Promise.all(lists.concat([cacheRequest]).map((v) => {
+                return window.caches.open(v).then((c) => cachePool.set(v, c)).catch(() => null);
+            }))
+                .then(() => callback())
+                .catch(() => callback());
         },
     };
 })();
@@ -76,58 +90,75 @@ export const cacheWrapper = (cacheName) => {
      * @param {number} ttl
      * @returns {Promise<Response>}
      */
-    const set = (input, res, forceCache, ttl) => res.clone().arrayBuffer().then((ab) => {
-        if (!res.ok) {
-            return res;
+    const set = (input, res, forceCache, ttl) => {
+        if (!cacheObject) {
+            return Promise.resolve(res);
         }
 
-        const now = new Date();
-        const headers = new Headers(res.headers);
-
-        if (!headers.has('Date')) {
-            headers.set('Date', now.toUTCString());
-        }
-
-        if (forceCache || !headers.has('Cache-Control')) {
-            if (!forceCache && headers.has('Expires')) {
-                const expTime = new Date(headers.get('Expires'));
-                ttl = Math.max(0, expTime.getTime() - now.getTime());
+        return res.clone().arrayBuffer().then((ab) => {
+            if (!res.ok) {
+                return res;
             }
 
-            if (ttl === 0) {
-                throw new Error('Cache max age cannot be 0');
+            const now = new Date();
+            const headers = new Headers(res.headers);
+
+            if (!headers.has('Date')) {
+                headers.set('Date', now.toUTCString());
             }
 
-            headers.set('Cache-Control', `public, max-age=${Math.floor(ttl / 1000)}`);
-        }
+            if (forceCache || !headers.has('Cache-Control')) {
+                if (!forceCache && headers.has('Expires')) {
+                    const expTime = new Date(headers.get('Expires'));
+                    ttl = Math.max(0, expTime.getTime() - now.getTime());
+                }
 
-        if (!headers.has('Content-Length')) {
-            headers.set('Content-Length', String(ab.byteLength));
-        }
+                if (ttl === 0) {
+                    throw new Error('Cache max age cannot be 0');
+                }
 
-        return cacheObject.put(input, new Response(ab, { headers })).then(() => res);
-    });
+                headers.set('Cache-Control', `public, max-age=${Math.floor(ttl / 1000)}`);
+            }
+
+            if (!headers.has('Content-Length')) {
+                headers.set('Content-Length', String(ab.byteLength));
+            }
+
+            return cacheObject.put(input, new Response(ab, { headers })).then(() => res);
+        });
+    };
 
     /**
      * @param {string|URL} input 
      * @returns {Promise<Response|null>}
      */
-    const has = (input) => cacheObject.match(input).then((res) => {
-        if (!res) {
-            return null;
+    const has = (input) => {
+        if (!cacheObject) {
+            return Promise.resolve(null);
         }
 
-        const maxAge = res.headers.get('Cache-Control').match(/max-age=(\d+)/)[1];
-        const expTime = Date.parse(res.headers.get('Date')) + (parseInt(maxAge) * 1000);
+        return cacheObject.match(input).then((res) => {
+            if (!res) {
+                return null;
+            }
 
-        return Date.now() > expTime ? null : res;
-    });
+            const maxAge = res.headers.get('Cache-Control').match(/max-age=(\d+)/)[1];
+            const expTime = Date.parse(res.headers.get('Date')) + (parseInt(maxAge) * 1000);
+
+            return Date.now() > expTime ? null : res;
+        });
+    };
 
     /**
      * @param {string|URL} input 
      * @returns {Promise<boolean>}
      */
-    const del = (input) => cacheObject.delete(input);
+    const del = (input) => {
+        if (!cacheObject) {
+            return Promise.resolve(false);
+        }
+        return cacheObject.delete(input);
+    };
 
     return {
         set,

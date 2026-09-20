@@ -22,11 +22,6 @@ export const guest = (() => {
     let information = null;
 
     /**
-     * @type {ReturnType<typeof storage>|null}
-     */
-    let config = null;
-
-    /**
      * @returns {void}
      */
     const countDownDate = () => {
@@ -247,19 +242,22 @@ export const guest = (() => {
      */
     const buildGoogleCalendar = () => {
         /**
-         * @param {string} d 
+         * @param {string} d
          * @returns {string}
          */
-        const formatDate = (d) => (new Date(d.replace(' ', 'T') + ':00Z')).toISOString().replace(/[-:]/g, '').split('.').shift();
+        const formatDate = (d) => {
+            const [date, time] = d.split(' ');
+            return `${date.replace(/-/g, '')}T${time.replace(':', '')}00+0700`;
+        };
 
         const url = new URL('https://calendar.google.com/calendar/render');
         const data = new URLSearchParams({
             action: 'TEMPLATE',
-            text: 'The Wedding of Wahyu and Riski',
-            dates: `${formatDate('2023-03-15 10:00')}/${formatDate('2023-03-15 11:00')}`,
-            details: 'Tanpa mengurangi rasa hormat, kami mengundang Anda untuk berkenan menghadiri acara pernikahan kami. Terima kasih atas perhatian dan doa restu Anda, yang menjadi kebahagiaan serta kehormatan besar bagi kami.',
-            location: 'RT 10 RW 02, Desa Pajerukan, Kec. Kalibagor, Kab. Banyumas, Jawa Tengah 53191.',
-            ctz: config.get('tz'),
+            text: 'Lễ Thành Hôn - Nguyễn Hữu Phương & Nguyễn Phương Quỳnh',
+            dates: `${formatDate('2026-11-20 09:30')}/${formatDate('2026-11-20 14:00')}`,
+            details: 'Trân trọng kính mời quý khách đến tham dự Lễ Thành Hôn & Tiệc Cưới của Chú rể Nguyễn Hữu Phương và Cô dâu Nguyễn Phương Quỳnh tại Nhà hàng Lâm Ký, phường Sơn Tây, Hà Nội.',
+            location: 'Nhà hàng Lâm Ký, phường Sơn Tây, Thị xã Sơn Tây, TP. Hà Nội',
+            ctz: 'Asia/Ho_Chi_Minh',
         });
 
         url.search = data.toString();
@@ -322,7 +320,6 @@ export const guest = (() => {
         comment.init();
         progress.init();
 
-        config = storage('config');
         information = storage('information');
 
         const vid = video.init();
@@ -340,13 +337,11 @@ export const guest = (() => {
         });
 
         if (!token || token.length <= 0) {
-            document.getElementById('comment')?.remove();
-            document.querySelector('a.nav-link[href="#comment"]')?.closest('li.nav-item')?.remove();
-
             vid.load();
             img.load();
             aud.load();
             lib.load({ confetti: document.body.getAttribute('data-confetti') === 'true' });
+            comment.initLocal();
         }
 
         if (token && token.length > 0) {
@@ -395,7 +390,7 @@ export const guest = (() => {
             storage('comment').clear();
         }
 
-        window.addEventListener('load', () => {
+        const runPageLoaded = () => {
             pool.init(pageLoaded, [
                 'image',
                 'video',
@@ -403,7 +398,13 @@ export const guest = (() => {
                 'libs',
                 'gif',
             ]);
-        });
+        };
+
+        if (document.readyState === 'complete') {
+            runPageLoaded();
+        } else {
+            window.addEventListener('load', runPageLoaded);
+        }
 
         return {
             util,

@@ -4,6 +4,8 @@
 html {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 .with-scrollbar {
@@ -12,11 +14,15 @@ html {
 }
 
 .font-esthetic {
-    font-family: 'Sacramento', cursive !important;
+    font-family: 'Great Vibes', 'Playfair Display', cursive !important;
 }
 
-.font-arabic {
-    font-family: 'Noto Naskh Arabic', serif !important;
+.font-serif {
+    font-family: 'Playfair Display', Georgia, serif !important;
+}
+
+.font-sans {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
 }
 
 .img-center-crop {
@@ -112,4 +118,354 @@ svg {
 
 .no-gap-bottom {
     margin-bottom: -0.75rem !important;
+}
+
+.welcome-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+}
+
+.welcome-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+html[data-bs-theme="light"] .welcome-overlay {
+    background: rgba(255, 255, 255, 0.78);
+}
+
+html[data-bs-theme="dark"] .welcome-overlay {
+    background: rgba(18, 18, 18, 0.82);
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 2;
+}
+
+.map-responsive {
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0;
+    border-radius: 1rem;
+}
+
+.map-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border: 0;
+}
+
+.nav-pills-romantic .nav-link {
+    color: var(--bs-secondary);
+    border-radius: 50rem;
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+    font-weight: 500;
+}
+
+.nav-pills-romantic .nav-link.active {
+    background-color: #d63384;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(214, 51, 132, 0.35);
+}
+
+.img-welcome-couple {
+    width: 145px;
+    height: 215px;
+    max-width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 1.25rem;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.img-welcome-couple:hover {
+    transform: scale(1.03);
+}
+
+.img-welcome-circle {
+    width: 185px;
+    height: 185px;
+    border-radius: 50% !important;
+    object-position: top center;
+}
+
+/* Bespoke Wedding Brand & Monogram */
+.wedding-monogram-badge {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #881337, #4c0519);
+    border: 2px solid #d4af37;
+    box-shadow: 0 4px 15px rgba(136, 19, 55, 0.4), inset 0 0 10px rgba(212, 175, 55, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    position: relative;
+    user-select: none;
+}
+
+.monogram-letter {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-style: italic;
+    background: linear-gradient(135deg, #ffe082, #d4af37, #aa7c11);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.monogram-heart {
+    font-size: 0.75rem;
+    color: #fb7185;
+    animation: heartGlow 2s infinite ease-in-out;
+}
+
+@keyframes heartGlow {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #fb7185); }
+    50% { transform: scale(1.2); filter: drop-shadow(0 0 6px #f43f5e); }
+}
+
+/* Luxury Story Card & Timeline Enhancements */
+.story-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border: 1px solid rgba(225, 29, 72, 0.12) !important;
+}
+
+.story-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.timeline-circle {
+    width: 2.3rem !important;
+    height: 2.3rem !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: 700 !important;
+    background: linear-gradient(135deg, #e11d48, #be123c) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35), 0 0 0 3px rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Ribbon Badge */
+.wedding-ribbon {
+    display: inline-block;
+    padding: 0.35rem 1.25rem;
+    border-radius: 50rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(225, 29, 72, 0.12));
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: #b8860b;
+}
+
+html[data-bs-theme="dark"] .wedding-ribbon {
+    color: #ffd54f;
+    border-color: rgba(255, 213, 79, 0.3);
+}
+
+/* Couple Card Enhancements */
+.couple-avatar-wrap {
+    position: relative;
+    display: inline-block;
+    padding: 6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4af37, #f3e8ff, #e11d48);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.couple-avatar-wrap .img-center-crop {
+    border: 3px solid #ffffff !important;
+}
+
+/* Bottom Nav Glassmorphism on Mobile */
+#navbar-menu {
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-bs-theme="light"] #navbar-menu {
+    background-color: rgba(255, 255, 255, 0.92) !important;
+}
+
+html[data-bs-theme="dark"] #navbar-menu {
+    background-color: rgba(18, 18, 18, 0.92) !important;
+}
+
+#navbar-menu .nav-link {
+    transition: color 0.2s ease, transform 0.2s ease;
+    border-radius: 0.75rem;
+    margin: 2px 4px;
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+}
+
+#navbar-menu .nav-link.active {
+    color: #e11d48 !important;
+    font-weight: 600;
+}
+
+/* Floating Controls Spacing for Mobile */
+@media (max-width: 576px) {
+    .floating-controls {
+        bottom: 5.5rem !important;
+        right: 0.85rem !important;
+    }
+}
+
+
+/* ── Responsive Enhancements ─────────────────────────────────────── */
+
+/* Gallery carousel – responsive image height */
+@media (max-width: 575px) {
+    .carousel-img-h {
+        height: 240px !important;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .carousel-img-h {
+        height: 300px !important;
+    }
+}
+
+/* Avatar on very small screens (< 380px) */
+@media (max-width: 380px) {
+    .img-center-crop {
+        width: 10rem;
+        height: 10rem;
+    }
+    .img-welcome-circle {
+        width: 145px;
+        height: 145px;
+    }
+}
+
+/* Welcome circle image on smallest screens */
+@media (max-width: 360px) {
+    .img-welcome-circle {
+        width: 130px;
+        height: 130px;
+    }
+    /* Countdown numbers */
+    #day, #hour, #minute, #second {
+        font-size: 1.1rem !important;
+    }
+}
+
+/* Search input placeholder overflow on small screens */
+@media (max-width: 430px) {
+    #search-wishes-input::placeholder {
+        font-size: 0.78rem;
+    }
+}
+
+/* Video container responsive max-height */
+#video-love-stroy video {
+    max-height: 75vw;
+    min-height: 200px;
+}
+
+/* Story timeline card text on mobile */
+@media (max-width: 576px) {
+    .story-card p.small {
+        font-size: 0.82rem !important;
+        line-height: 1.55 !important;
+    }
+}
+
+/* Map iframe taller on mobile for better usability */
+@media (max-width: 576px) {
+    .map-responsive {
+        padding-bottom: 70%;
+    }
+}
+
+/* Section heading font clamp for large screens */
+@media (min-width: 576px) {
+    .font-esthetic {
+        overflow-wrap: anywhere;
+    }
+}
+
+/* Tablet – constrain content column width for better readability */
+@media (min-width: 576px) and (max-width: 991px) {
+    #root > div:last-child {
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .carousel-img-h {
+        height: 340px !important;
+    }
+}
+
+/* Mobile – fluid headings override inline sizes */
+@media (max-width: 576px) {
+    h1.font-esthetic,
+    h2.font-esthetic {
+        font-size: clamp(1.75rem, 7vw, 2.75rem) !important;
+    }
+
+    h3.font-esthetic,
+    h4.font-esthetic {
+        font-size: clamp(1.5rem, 5.5vw, 2.25rem) !important;
+    }
+
+    .heartbeat.font-esthetic {
+        font-size: clamp(2.5rem, 10vw, 4rem) !important;
+    }
+}
+
+/* Desktop – cap content column on ultra-wide screens */
+@media (min-width: 992px) {
+    #root > div:last-child {
+        max-width: 540px;
+    }
+}
+
+/* Safe area for notched phones (iPhone X+) */
+@supports (padding: env(safe-area-inset-bottom)) {
+    #navbar-menu {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .floating-controls {
+        right: calc(0.85rem + env(safe-area-inset-right, 0px)) !important;
+    }
+
+    body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
 }

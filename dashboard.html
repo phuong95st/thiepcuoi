@@ -1,412 +1,694 @@
 <!doctype html>
-<html lang="en" data-bs-theme="auto">
+<html lang="vi" data-bs-theme="auto">
 
 <head>
-    <!-- Common -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Dashboard Ulems">
-    <title>Dashboard Ulems</title>
-
-    <!-- Appearance -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Dashboard Ulems">
-    <meta name="theme-color" content="#f8f9fa">
-    <meta name="color-scheme" content="dark light">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/png" sizes="192x192" href="https://ulems.my.id/assets/images/icon-192x192.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="https://ulems.my.id/assets/images/icon-192x192.png">
+    <meta name="description" content="Quản Trị Thiệp Cưới & RSVP - Nguyễn Hữu Phương & Nguyễn Phương Quỳnh">
+    <title>Quản Trị RSVP & Sổ Lưu Bút - Phương &amp; Quỳnh</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
 
     <!-- Preconnect CDN -->
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 
-    <!-- Preload Resources -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" as="style">
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha256-2FMn2Zx6PuH5tdBQDRNwrOo60ts5wWPC9R8jK67b3t4=" crossorigin="anonymous" as="style">
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css" integrity="sha256-4rTIfo5GQTi/7UJqoyUJQKzxW8VN/YBH31+Cy+vTZj4=" crossorigin="anonymous" as="style">
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha256-5P1JGBOIxI7FBAvT/mb1fCnI5n/NhQKzNUuW7Hq0fMc=" crossorigin="anonymous" as="script">
-
-    <!-- Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap">
-
-    <!-- Dependencies CSS -->
+    <!-- Fonts & CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha256-2FMn2Zx6PuH5tdBQDRNwrOo60ts5wWPC9R8jK67b3t4=" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css" integrity="sha256-4rTIfo5GQTi/7UJqoyUJQKzxW8VN/YBH31+Cy+vTZj4=" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/admin.css">
 
-    <!-- Dependencies JS -->
+    <!-- Bootstrap JS -->
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha256-5P1JGBOIxI7FBAvT/mb1fCnI5n/NhQKzNUuW7Hq0fMc=" crossorigin="anonymous"></script>
-    <script src="./dist/admin.js"></script>
+
+    <style>
+        body {
+            font-family: 'Josefin Sans', sans-serif;
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+            min-height: 100vh;
+        }
+        .stat-card {
+            border-radius: 1.25rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+        }
+        .avatar-circle {
+            width: 2.4rem;
+            height: 2.4rem;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .table-card {
+            border-radius: 1.25rem;
+            overflow: hidden;
+        }
+        .badge-romantic {
+            background: linear-gradient(135deg, #e91e63, #9c27b0);
+            color: #fff;
+        }
+        .btn-romantic {
+            background: linear-gradient(135deg, #e91e63, #ad1457);
+            color: #fff !important;
+            border: none;
+        }
+        .btn-romantic:hover {
+            opacity: 0.9;
+        }
+    </style>
 </head>
 
-<!-- <html lang="en" data-bs-theme="auto"> ['auto', 'dark', 'light'] -->
+<body>
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="z-index:9999; background: linear-gradient(135deg, #881337 0%, #4c0519 60%, #1a0a0a 100%);">
+        <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width:380px; width:92%;">
+            <div class="text-center mb-4">
+                <div class="mx-auto mb-3 rounded-circle bg-danger d-flex align-items-center justify-content-center shadow" style="width:64px;height:64px;">
+                    <i class="fa-solid fa-lock text-white fa-xl"></i>
+                </div>
+                <h5 class="fw-bold mb-1">Đăng Nhập Quản Trị</h5>
+                <small class="text-secondary">Phương &amp; Quỳnh • RSVP Admin</small>
+            </div>
+            <div class="mb-3">
+                <label class="form-label small fw-semibold">Tên đăng nhập</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent"><i class="fa-solid fa-user text-secondary"></i></span>
+                    <input type="text" id="login-username" class="form-control" placeholder="Nhập tên đăng nhập..." autocomplete="username">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label small fw-semibold">Mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent"><i class="fa-solid fa-key text-secondary"></i></span>
+                    <input type="password" id="login-password" class="form-control" placeholder="Nhập mật khẩu..." autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
+                    <button class="btn btn-outline-secondary" type="button" onclick="toggleLoginPwd(this)" title="Hiện/ẩn mật khẩu"><i class="fa-solid fa-eye"></i></button>
+                </div>
+            </div>
+            <div id="login-error" class="alert alert-danger py-2 small d-none"><i class="fa-solid fa-triangle-exclamation me-1"></i>Sai tên đăng nhập hoặc mật khẩu!</div>
+            <button class="btn btn-romantic w-100 rounded-pill py-2 fw-semibold" onclick="doLogin()">
+                <i class="fa-solid fa-right-to-bracket me-2"></i>Đăng Nhập
+            </button>
+            <p class="text-center text-secondary small mt-3 mb-0">
+                <a href="./index.html" class="text-secondary text-decoration-none"><i class="fa-solid fa-arrow-left me-1"></i>Quay lại thiệp cưới</a>
+            </p>
+        </div>
+    </div>
 
-<body data-url="https://api.ulems.my.id/">
+    <!-- Dashboard Wrapper (hidden until logged in) -->
+    <div id="dashboard-content" class="d-none">
 
-    <!-- Nav bottom -->
-    <nav class="navbar navbar-expand fixed-bottom rounded-top-4 border-top d-md-none d-lg-none d-xl-none p-0">
-        <ul class="navbar-nav nav-justified w-100 align-items-center">
-            <li class="nav-item">
-                <button class="nav-link active" onclick="undangan.admin.navbar.buttonNavHome(this)">
-                    <i class="fa-solid fa-house"></i>
-                    <span class="d-block" style="font-size: 0.7rem;">Home</span>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg border-bottom sticky-top bg-body py-2 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center fw-bold text-danger m-0" href="./index.html">
+                <i class="fa-solid fa-heart me-2"></i>
+                <span>Phương &amp; Quỳnh</span>
+                <span class="badge badge-romantic ms-2 font-monospace small px-2 py-1" style="font-size: 0.72rem;">RSVP Admin</span>
+            </a>
+
+            <div class="d-flex align-items-center gap-2">
+                <a href="./index.html" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-envelope-open-text me-1"></i>Xem Thiệp Cưới
+                </a>
+                <button type="button" class="btn btn-outline-secondary btn-sm rounded-circle shadow-sm" id="btn-theme" title="Đổi giao diện sáng/tối" onclick="toggleTheme()">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
                 </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link" onclick="undangan.admin.navbar.buttonNavSetting(this)">
-                    <i class="fa-solid fa-gear"></i>
-                    <span class="d-block" style="font-size: 0.7rem;">Setting</span>
+                <button type="button" class="btn btn-outline-danger btn-sm rounded-pill px-3 shadow-sm" onclick="doLogout()" title="Đăng xuất">
+                    <i class="fa-solid fa-right-from-bracket me-1"></i>Đăng xuất
                 </button>
-            </li>
-        </ul>
+            </div>
+        </div>
     </nav>
 
-    <!-- Main -->
-    <main class="container mt-4 mb-5">
+    <!-- Main Content -->
+    <main class="container py-4 mb-5">
+        <!-- Dashboard Header -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom">
+            <div>
+                <h3 class="fw-bold mb-1"><i class="fa-solid fa-clipboard-check text-danger me-2"></i>Bảng Quản Lý Khách Mời &amp; RSVP</h3>
+                <p class="text-secondary small mb-0">Hôn lễ: <strong>Nguyễn Hữu Phương &amp; Nguyễn Phương Quỳnh</strong> &bull; Ngày 20/11/2026 tại Nhà hàng Lâm Ký, Sơn Tây, Hà Nội</p>
+            </div>
+            <div class="mt-3 mt-md-0 d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm" onclick="exportToCSV()">
+                    <i class="fa-solid fa-file-excel me-1"></i>Xuất Excel (CSV)
+                </button>
+                <button type="button" class="btn btn-romantic btn-sm rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalAddWish">
+                    <i class="fa-solid fa-plus me-1"></i>Thêm Khách Mời
+                </button>
+                <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalSync">
+                    <i class="fa-solid fa-cloud-arrow-up me-1"></i>Đồng Bộ Google Sheets
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-2 shadow-sm" onclick="loadDashboard()" title="Làm mới dữ liệu">
+                    <i class="fa-solid fa-rotate"></i>
+                </button>
+            </div>
+        </div>
 
-        <!-- Header -->
-        <div class="d-none d-sm-flex justify-content-between align-items-center mt-4 mb-5 pt-1">
-            <h4 class="m-0 p-0 flex-grow-1 fw-bold">Undangan<i class="fa-solid fa-fire text-danger ms-2"></i></h4>
-            <div class="m-0 p-0 flex-grow-1 text-end" id="dashboard-name" style="font-size: 1.4rem;">
-                <div class="placeholder-wave">
-                    <span class="placeholder col-6 rounded-4"></span>
+        <!-- Real-time Statistics Cards -->
+        <div class="row g-3 mb-4">
+            <!-- Total Wishes -->
+            <div class="col-6 col-md-3">
+                <div class="stat-card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-white-50 text-uppercase fw-semibold" style="font-size: 0.75rem;">Tổng Lời Chúc</small>
+                            <h2 class="fw-bold my-1" id="stat-total">0</h2>
+                            <span class="badge bg-white text-dark rounded-pill px-2 py-1" style="font-size: 0.72rem;">Sổ lưu bút</span>
+                        </div>
+                        <i class="fa-solid fa-comments fa-2xl opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attending Guests -->
+            <div class="col-6 col-md-3">
+                <div class="stat-card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #11998e, #38ef7d);">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-white-50 text-uppercase fw-semibold" style="font-size: 0.75rem;">Xác Nhận Tham Dự</small>
+                            <h2 class="fw-bold my-1" id="stat-attending">0</h2>
+                            <span class="badge bg-white text-success rounded-pill px-2 py-1" id="stat-attending-rate" style="font-size: 0.72rem;">0% tham dự</span>
+                        </div>
+                        <i class="fa-solid fa-circle-check fa-2xl opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Absent Guests -->
+            <div class="col-6 col-md-3">
+                <div class="stat-card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #ee0979, #ff6a00);">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-white-50 text-uppercase fw-semibold" style="font-size: 0.75rem;">Báo Vắng Mặt</small>
+                            <h2 class="fw-bold my-1" id="stat-absent">0</h2>
+                            <span class="badge bg-white text-danger rounded-pill px-2 py-1" style="font-size: 0.72rem;">Báo bận / Gửi chúc</span>
+                        </div>
+                        <i class="fa-solid fa-circle-xmark fa-2xl opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Likes -->
+            <div class="col-6 col-md-3">
+                <div class="stat-card shadow-sm p-3 text-white" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-white-50 text-uppercase fw-semibold" style="font-size: 0.75rem;">Lượt Thả Tim</small>
+                            <h2 class="fw-bold my-1" id="stat-likes">0</h2>
+                            <span class="badge bg-white text-danger rounded-pill px-2 py-1" style="font-size: 0.72rem;">Yêu thích</span>
+                        </div>
+                        <i class="fa-solid fa-heart fa-2xl opacity-50"></i>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Body -->
-        <div class="row m-0 p-0">
+        <!-- Filter & Search Toolbar -->
+        <div class="bg-body border rounded-4 p-3 shadow-sm mb-4">
+            <div class="row g-2 align-items-center justify-content-between">
+                <div class="col-12 col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0"><i class="fa-solid fa-magnifying-glass text-secondary"></i></span>
+                        <input type="text" id="search-input" class="form-control border-start-0" placeholder="Tìm kiếm theo tên khách mời..." oninput="filterWishes()">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 text-md-end">
+                    <div class="btn-group" role="group" aria-label="Bộ lọc trạng thái">
+                        <button type="button" class="btn btn-sm btn-outline-secondary active rounded-start-pill px-3" data-filter="all" onclick="setFilter('all', this)">Tất cả (<span id="count-filter-all">0</span>)</button>
+                        <button type="button" class="btn btn-sm btn-outline-success px-3" data-filter="present" onclick="setFilter('present', this)">Tham dự (<span id="count-filter-present">0</span>)</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger rounded-end-pill px-3" data-filter="absent" onclick="setFilter('absent', this)">Báo vắng (<span id="count-filter-absent">0</span>)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <!-- Menu -->
-            <div class="col-md-3 d-none d-md-block m-0 p-0">
-                <ul class="nav flex-column w-100 nav-pills pe-4" role="tablist">
-                    <li class="nav-item pe-2" role="presentation">
-                        <button class="btn-theme-auto nav-link w-100 text-start fw-semibold mb-1 rounded-4 shadow-sm active" data-bs-toggle="pill" data-bs-target="#pills-home" id="button-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                            <i class="fa-solid fa-house ms-3 me-2"></i>Home
-                        </button>
-                    </li>
-                    <li class="nav-item pe-2" role="presentation">
-                        <button class="btn-theme-auto nav-link w-100 text-start fw-semibold my-1 rounded-4 shadow-sm" data-bs-toggle="pill" data-bs-target="#pills-setting" id="button-setting" type="button" role="tab" aria-controls="pills-setting" aria-selected="false">
-                            <i class="fa-solid fa-gear ms-3 me-2"></i>Setting
-                        </button>
-                    </li>
-                    <li class="nav-item pe-2" role="presentation">
-                        <hr class="my-2" aria-hidden="true">
-                    </li>
-                    <li class="nav-item pe-2" role="presentation">
-                        <button class="btn-theme-auto logout nav-link w-100 text-start fw-semibold mt-1 rounded-4 shadow-sm" onclick="undangan.admin.logout()" type="button" role="tab" aria-selected="false">
-                            <i class="fa-solid fa-right-from-bracket ms-3 me-2"></i>Logout
-                        </button>
-                    </li>
-                </ul>
+        <!-- Guest List & Wishes Table -->
+        <div class="card table-card border shadow-sm">
+            <div class="card-header bg-body py-3 d-flex justify-content-between align-items-center">
+                <h5 class="m-0 fw-bold"><i class="fa-solid fa-list me-2 text-danger"></i>Danh Sách Chi Tiết Lời Chúc &amp; Khách Mời</h5>
+                <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-1" id="list-total-badge">0 khách mời</span>
             </div>
 
-            <!-- Content -->
-            <div class="col-md-9 m-0 p-0">
-                <div class="tab-content">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="ps-3" style="width: 5%;">#</th>
+                            <th scope="col" style="width: 25%;">Khách mời</th>
+                            <th scope="col" style="width: 15%;">Xác nhận RSVP</th>
+                            <th scope="col" style="width: 35%;">Lời chúc mừng</th>
+                            <th scope="col" style="width: 12%;">Thời gian</th>
+                            <th scope="col" class="text-center pe-3" style="width: 8%;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wishes-table-body">
+                        <!-- Loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
 
-                    <!-- Home -->
-                    <section class="tab-pane fade show active" id="pills-home" role="tabpanel" tabindex="0">
-
-                        <!-- Sub Header -->
-                        <div class="rounded-4 p-2 mb-4 shadow" style="background-color: var(--bs-gray-200)">
-                            <div class="d-flex justify-content-between">
-                                <h5 class="fw-bold my-1 ms-0 p-0" style="color: var(--bs-gray-900); font-size: 1rem;"><i class="fa-solid fa-home mx-2"></i>Home</h5>
-                                <div class="d-flex">
-                                    <button class="btn btn-success rounded-3 btn-sm shadow-sm my-0 ms-0 me-2 pb-0" onclick="undangan.admin.download(this)" data-offline-disabled="false" aria-label="Download comment">
-                                        <i class="fa-solid fa-download"></i><span class="d-none d-sm-inline ms-2">Download</span>
-                                    </button>
-                                    <button class="btn btn-secondary rounded-3 btn-sm shadow-sm m-0 pb-0" onclick="undangan.theme.change()" aria-label="Change theme">
-                                        <i class="fa-solid fa-circle-half-stroke"></i><span class="d-none d-sm-inline ms-2">Theme</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Stats -->
-                        <div class="row">
-                            <div class="col col-xl-3 col-6 mb-3">
-                                <div class="rounded-4 shadow p-3 border-0" style="background: #8573F1;">
-                                    <div class="row align-items-center" style="color: var(--bs-gray-100);">
-                                        <div class="col-9">
-                                            <p class="fw-bold m-0 p-0">Comments</p>
-                                            <div class="fw-bold m-0 p-0" id="count-comment">
-                                                <div class="placeholder-wave">
-                                                    <span class="placeholder col-8 rounded-3"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-3 p-0">
-                                            <div class="d-block d-sm-none">
-                                                <i class="fa-solid fa-comments me-2" style="font-size: 1.5rem;"></i>
-                                            </div>
-                                            <div class="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                                                <i class="fa-solid fa-comments fa-2xl me-2"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-xl-3 col-6 mb-3">
-                                <div class="rounded-4 shadow p-3 border-0" style="background: #7A5CD9;">
-                                    <div class="row align-items-center" style="color: var(--bs-gray-100);">
-                                        <div class="col-9">
-                                            <p class="fw-bold m-0 p-0">Present</p>
-                                            <div class="fw-bold m-0 p-0" id="count-present">
-                                                <div class="placeholder-wave">
-                                                    <span class="placeholder col-8 rounded-3"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-3 p-0">
-                                            <div class="d-block d-sm-none">
-                                                <i class="fa-solid fa-circle-check me-2" style="font-size: 1.5rem;"></i>
-                                            </div>
-                                            <div class="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                                                <i class="fa-solid fa-circle-check fa-2xl me-2"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-xl-3 col-6 mb-3">
-                                <div class="rounded-4 shadow p-3 border-0" style="background: #6546B1;">
-                                    <div class="row align-items-center" style="color: var(--bs-gray-100);">
-                                        <div class="col-9">
-                                            <p class="fw-bold m-0 p-0">Absent</p>
-                                            <div class="fw-bold m-0 p-0" id="count-absent">
-                                                <div class="placeholder-wave">
-                                                    <span class="placeholder col-8 rounded-3"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-3 p-0">
-                                            <div class="d-block d-sm-none">
-                                                <i class="fa-solid fa-circle-xmark me-2" style="font-size: 1.5rem;"></i>
-                                            </div>
-                                            <div class="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                                                <i class="fa-solid fa-circle-xmark fa-2xl me-2"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-xl-3 col-6 mb-3">
-                                <div class="rounded-4 shadow p-3 border-0" style="background: #4F3392;">
-                                    <div class="row align-items-center" style="color: var(--bs-gray-100);">
-                                        <div class="col-9">
-                                            <p class="fw-bold m-0 p-0">Likes</p>
-                                            <div class="fw-bold m-0 p-0" id="count-like">
-                                                <div class="placeholder-wave">
-                                                    <span class="placeholder col-8 rounded-3"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-3 p-0">
-                                            <div class="d-block d-sm-none">
-                                                <i class="fa-solid fa-heart me-2" style="font-size: 1.5rem;"></i>
-                                            </div>
-                                            <div class="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                                                <i class="fa-solid fa-heart fa-2xl me-2"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2">
-                            <div class="col-lg-6 col-12">
-                                <!-- Form -->
-                                <div class="bg-theme-auto p-3 mb-3 rounded-4 shadow">
-                                    <div class="d-block" id="comment-form-default">
-                                        <label for="form-comment" class="form-label fw-bold my-1"><i class="fa-solid fa-comment me-2"></i>Comment</label>
-
-                                        <div class="position-relative">
-                                            <button class="btn btn-secondary btn-sm rounded-4 shadow-sm me-1 my-1 position-absolute bottom-0 end-0" onclick="undangan.comment.gif.open(undangan.comment.gif.default)" aria-label="button gif" data-offline-disabled="false"><i class="fa-solid fa-photo-film"></i></button>
-                                            <textarea dir="auto" class="form-control shadow-sm mb-3 rounded-4" id="form-comment" name="form-comment" rows="3" minlength="1" maxlength="1000" placeholder="Type to comment" data-offline-disabled="false"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-none mb-3" id="gif-form-default"></div>
-
-                                    <div class="d-flex justify-content-end mb-0">
-                                        <button onclick="undangan.comment.send(this)" class="btn btn-primary btn-sm rounded-4 shadow-sm" data-offline-disabled="false"><i class="fa-solid fa-paper-plane me-2"></i>Send</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6 col-12">
-                                <!-- Comments -->
-                                <div class="mb-2" id="comments" data-loading="false"></div>
-
-                                <!-- Pagination -->
-                                <nav class="d-flex d-none justify-content-center py-3 mb-4" id="pagination"></nav>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Setting -->
-                    <section class="tab-pane fade" id="pills-setting" role="tabpanel" tabindex="0">
-
-                        <!-- Sub Header -->
-                        <div class="rounded-4 p-2 mb-4 shadow" style="background-color: var(--bs-gray-200)">
-                            <h5 class="fw-bold my-1 ms-0 p-0" style="color: var(--bs-gray-900); font-size: 1rem;"><i class="fa-solid fa-gear mx-2"></i>Setting</h5>
-                        </div>
-
-                        <!-- Email -->
-                        <div class="p-3 bg-theme-auto mb-3 rounded-4 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-envelope me-2"></i>Email</p>
-                            <p class="m-0 p-0" id="dashboard-email"></p>
-                        </div>
-
-                        <!-- Name -->
-                        <div class="p-3 bg-theme-auto mb-3 rounded-4 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-person me-2"></i>Name</p>
-                            <form>
-                                <div class="mb-3">
-                                    <input dir="auto" type="text" class="form-control form-control-sm rounded-4 shadow-sm" id="form-name" minlength="2" maxlength="50" name="form-name" oninput="undangan.admin.enableButtonName()" autocomplete="name" data-offline-disabled="false">
-                                </div>
-                            </form>
-
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-4 shadow-sm" id="button-change-name" onclick="undangan.admin.changeName(this)" disabled data-offline-disabled="false">Change</button>
-                            </div>
-                        </div>
-
-                        <!-- Access Key -->
-                        <div class="p-3 bg-theme-auto mb-3 rounded-4 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-key me-2"></i>Access Key</p>
-
-                            <div class="input-group input-group-sm mb-3">
-                                <input type="text" class="form-control form-control-sm rounded-start-4 shadow-sm" id="dashboard-accesskey" placeholder="Regenerate key" readonly>
-                                <button class="btn btn-sm btn-outline-secondary rounded-end-4 shadow-sm" type="button" data-copy="" onclick="undangan.util.copy(this)" id="button-copy-accesskey"><i class="fa-solid fa-copy"></i></button>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-4 shadow-sm" onclick="undangan.admin.regenerate(this)" data-offline-disabled="false">Regenerate</button>
-                            </div>
-                        </div>
-
-                        <!-- Time Zone -->
-                        <div class="p-3 bg-theme-auto mb-3 rounded-4 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-location-dot me-2"></i>Time Zone</p>
-                            <form>
-                                <div class="position-relative mb-3">
-                                    <input type="text" class="form-control form-control-sm rounded-4 shadow-sm" id="form-timezone" oninput="undangan.admin.openLists(this, this.value)" onclick="undangan.admin.openLists(this)" autocomplete="off" data-offline-disabled="false">
-                                    <div id="dropdown-tz-list" class="d-none list-group position-absolute w-100 shadow-sm rounded-4 overflow-y-scroll z-3" style="max-height: 15rem;"></div>
-                                </div>
-                            </form>
-
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-4 shadow-sm" id="button-timezone" onclick="undangan.admin.changeTz(this)" disabled data-offline-disabled="false">Change</button>
-                            </div>
-                        </div>
-
-                        <!-- Tenor Key -->
-                        <div class="p-3 bg-theme-auto mb-3 rounded-4 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-photo-film me-2"></i>Tenor Key</p>
-
-                            <div class="input-group input-group-sm mb-3">
-                                <input type="text" class="form-control form-control-sm rounded-start-4 shadow-sm" id="dashboard-tenorkey" placeholder="Api key tenor" autocomplete="off">
-                                <button class="btn btn-sm btn-outline-secondary rounded-end-4 shadow-sm" type="button" onclick="document.getElementById('dashboard-tenorkey').value = null"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-4 shadow-sm" onclick="undangan.admin.tenor(this)" data-offline-disabled="false">Save</button>
-                            </div>
-                        </div>
-
-                        <!-- Toggle -->
-                        <div class="p-3 bg-theme-auto mb-3 rounded-4 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-sliders me-2"></i>Control</p>
-
-                            <div class="form-check form-switch mb-1">
-                                <input class="form-check-input shadow-sm" style="cursor:pointer;" type="checkbox" role="switch" id="filterBadWord" onchange="undangan.admin.changeCheckboxValue(this, 'filter')" data-offline-disabled="false">
-                                <label class="form-check-label" style="cursor:pointer;" for="filterBadWord">Filter bad word</label>
-                            </div>
-                            <div class="form-check form-switch mb-1">
-                                <input class="form-check-input shadow-sm" style="cursor:pointer;" type="checkbox" role="switch" id="confettiAnimation" onchange="undangan.admin.changeCheckboxValue(this, 'confetti_animation')" data-offline-disabled="false">
-                                <label class="form-check-label" style="cursor:pointer;" for="confettiAnimation">Confetti animation</label>
-                            </div>
-                            <div class="form-check form-switch mb-1">
-                                <input class="form-check-input shadow-sm" style="cursor:pointer;" type="checkbox" role="switch" id="replyComment" onchange="undangan.admin.changeCheckboxValue(this, 'can_reply')" data-offline-disabled="false">
-                                <label class="form-check-label" style="cursor:pointer;" for="replyComment">Can reply</label>
-                            </div>
-                            <div class="form-check form-switch mb-1">
-                                <input class="form-check-input shadow-sm" style="cursor:pointer;" type="checkbox" role="switch" id="editComment" onchange="undangan.admin.changeCheckboxValue(this, 'can_edit')" data-offline-disabled="false">
-                                <label class="form-check-label" style="cursor:pointer;" for="editComment">Can edit</label>
-                            </div>
-                            <div class="form-check form-switch mb-1">
-                                <input class="form-check-input shadow-sm" style="cursor:pointer;" type="checkbox" role="switch" id="deleteComment" onchange="undangan.admin.changeCheckboxValue(this, 'can_delete')" data-offline-disabled="false">
-                                <label class="form-check-label" style="cursor:pointer;" for="deleteComment">Can delete</label>
-                            </div>
-                        </div>
-
-                        <!-- Change Password -->
-                        <div class="p-3 bg-theme-auto mb-3 rounded-4 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-lock me-2"></i>Change Password</p>
-                            <form>
-                                <input hidden type="text" name="username" autocomplete="username" value="...">
-                                <div class="my-2">
-                                    <input type="password" class="form-control form-control-sm rounded-4 shadow-sm" id="old_password" minlength="8" maxlength="20" name="old_password" placeholder="Old Password" autocomplete="current-password" data-offline-disabled="false">
-                                </div>
-                                <div class="mb-3">
-                                    <input type="password" class="form-control form-control-sm rounded-4 shadow-sm" id="new_password" minlength="8" maxlength="20" name="new_password" oninput="undangan.admin.enableButtonPassword()" placeholder="New Password" autocomplete="new-password" data-offline-disabled="false">
-                                </div>
-                            </form>
-
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-4 shadow-sm" id="button-change-password" onclick="undangan.admin.changePassword(this)" disabled data-offline-disabled="false">Change</button>
-                            </div>
-                        </div>
-
-                        <!-- Logout -->
-                        <div class="d-block d-md-none d-lg-none d-xl-none">
-                            <div class="p-3 bg-theme-auto mb-3 rounded-4 shadow">
-                                <button type="button" class="btn btn-danger btn-sm w-100 text-center fw-semibold rounded-4 shadow-sm" onclick="undangan.admin.logout()">
-                                    <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="p-3 bg-theme-auto mb-4 rounded-4 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-heart me-2"></i>Love Project</p>
-                            <p class="m-0 p-0">Discover and support this project on <i class="fa-brands fa-github me-1"></i><a target="_blank" href="https://github.com/dewanakl/undangan">GitHub</a></p>
-                        </div>
-                    </section>
-                </div>
+            <div id="empty-state" class="text-center py-5 d-none">
+                <i class="fa-regular fa-folder-open fa-3x text-secondary opacity-50 mb-3"></i>
+                <p class="text-secondary mb-0">Chưa có dữ liệu nào phù hợp với bộ lọc.</p>
             </div>
         </div>
     </main>
 
-    <!-- Modal login -->
-    <div class="modal fade" id="mainModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-label="modal login" tabindex="-1" aria-hidden="true">
+    <!-- Modal: Thêm Khách Mời / Lời Chúc Thủ Công -->
+    <div class="modal fade" id="modalAddWish" tabindex="-1" aria-labelledby="modalAddWishLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4">
-                <div class="modal-body">
-                    <form>
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-bottom py-3">
+                    <h5 class="modal-title fw-bold" id="modalAddWishLabel"><i class="fa-solid fa-user-plus text-danger me-2"></i>Thêm Khách Mời &amp; Lời Chúc</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body py-3">
+                    <form id="form-manual-add" onsubmit="event.preventDefault(); submitManualWish();">
                         <div class="mb-3">
-                            <label for="loginEmail" class="form-label my-1"><i class="fa-solid fa-envelope me-2"></i>Email</label>
-                            <input type="email" class="form-control shadow-sm rounded-4" id="loginEmail" minlength="5" maxlength="254" placeholder="Enter your email" required autocomplete="email" data-offline-disabled="false">
+                            <label for="manual-name" class="form-label small fw-semibold">Họ và tên khách mời *</label>
+                            <input type="text" class="form-control rounded-3" id="manual-name" required placeholder="Ví dụ: Bác Tuấn, Bạn Hương...">
                         </div>
                         <div class="mb-3">
-                            <label for="loginPassword" class="form-label my-1"><i class="fa-solid fa-lock me-2"></i>Password</label>
-                            <input type="password" class="form-control shadow-sm rounded-4" id="loginPassword" minlength="8" maxlength="20" placeholder="Enter your password" required autocomplete="current-password" data-offline-disabled="false">
+                            <label for="manual-presence" class="form-label small fw-semibold">Trạng thái tham dự (RSVP)</label>
+                            <select class="form-select rounded-3" id="manual-presence">
+                                <option value="1" selected>&#9989; Chắc chắn tham dự</option>
+                                <option value="2">&#10060; Rất tiếc không thể tham dự</option>
+                                <option value="0">&#128140; Chỉ gửi lời chúc</option>
+                            </select>
                         </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary shadow-sm rounded-4" onclick="undangan.admin.auth.login(this)" data-offline-disabled="false"><i class="fa-solid fa-right-to-bracket me-2"></i>Login</button>
+                        <div class="mb-3">
+                            <label for="manual-comment" class="form-label small fw-semibold">Lời chúc phúc *</label>
+                            <textarea class="form-control rounded-3" id="manual-comment" rows="3" required placeholder="Nội dung lời chúc mừng..."></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-romantic btn-sm rounded-pill px-4">Lưu Lời Chúc</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal: Hướng Dẫn Đồng Bộ Google Sheets -->
+    <div class="modal fade" id="modalSync" tabindex="-1" aria-labelledby="modalSyncLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-bottom py-3">
+                    <h5 class="modal-title fw-bold" id="modalSyncLabel"><i class="fa-solid fa-cloud-arrow-up text-primary me-2"></i>Đồng Bộ RSVP Trực Tiếp Lên Google Sheets</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body py-3">
+                    <p class="small text-secondary mb-3">Khi kết nối Google Sheets, mỗi khi bất kỳ khách mời nào bấm "Gửi Lời Chúc Mừng" từ điện thoại của họ, dữ liệu sẽ ngay lập tức được ghi vào trang tính Google Sheets của bạn!</p>
+
+                    <div class="mb-3">
+                        <label for="input-webhook-url" class="form-label small fw-semibold">Đường dẫn Google Apps Script Web App (Webhook URL):</label>
+                        <div class="input-group">
+                            <input type="url" class="form-control rounded-start-3" id="input-webhook-url" placeholder="https://script.google.com/macros/s/.../exec">
+                            <button class="btn btn-primary rounded-end-3 px-3" type="button" onclick="saveWebhookUrl()">Lưu Cấu Hình</button>
+                        </div>
+                        <div id="webhook-status" class="small mt-1 text-success d-none">Đã lưu Webhook URL thành công!</div>
+                    </div>
+
+                    <div class="accordion" id="accordionGuide">
+                        <div class="accordion-item rounded-3 border">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGuide" aria-expanded="false" aria-controls="collapseGuide">
+                                    <i class="fa-solid fa-circle-question me-2 text-info"></i>Xem hướng dẫn 3 bước tạo Google Apps Script (1 phút)
+                                </button>
+                            </h2>
+                            <div id="collapseGuide" class="accordion-collapse collapse" data-bs-parent="#accordionGuide">
+                                <div class="accordion-body small">
+                                    <ol class="mb-2 ps-3">
+                                        <li>Tạo một Google Sheet mới, đặt tên: <em>Khách Mời Đám Cưới Phương Quỳnh</em>.</li>
+                                        <li>Vào menu <strong>Tiện ích mở rộng (Extensions)</strong> &rarr; <strong>Apps Script</strong>.</li>
+                                        <li>Xóa hết mã cũ và dán đoạn mã sau vào:</li>
+                                    </ol>
+                                    <pre class="bg-dark text-light p-3 rounded-3" style="font-size: 0.78rem;"><code>function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(["Thời gian", "Họ và tên", "Xác nhận RSVP", "Lời chúc"]);
+    }
+    sheet.appendRow([data.date, data.name, data.presence, data.comment]);
+    return ContentService.createTextOutput(JSON.stringify({status: "ok"})).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({status: "error", message: err.toString()})).setMimeType(ContentService.MimeType.JSON);
+  }
+}</code></pre>
+                                    <ol start="4" class="mb-0 ps-3">
+                                        <li>Bấm <strong>Triển khai (Deploy)</strong> &rarr; <strong>Triển khai dưới dạng ứng dụng web mới (New deployment)</strong>.</li>
+                                        <li>Chọn: <em>Người có quyền truy cập (Who has access)</em> = <strong>Bất kỳ ai (Anyone)</strong> &rarr; Bấm <strong>Deploy</strong>.</li>
+                                        <li>Copy đường dẫn Web App (kết thúc bằng <code>/exec</code>) dán vào ô bên trên và bấm <strong>Lưu Cấu Hình</strong>!</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top py-2">
+                    <button type="button" class="btn btn-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script quản lý dữ liệu Dashboard -->
+    <script>
+        const STORAGE_KEY = 'wedding_wishes_phuong_quynh';
+        let currentFilter = 'all';
+
+        function getWishes() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    return JSON.parse(raw);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+            return [
+                {
+                    id: 'wish-1',
+                    name: 'Gia đình Bác Vũ',
+                    presence: true,
+                    comment: 'Chúc hai cháu Hữu Phương và Phương Quỳnh trăm năm hạnh phúc, đầu bạc răng long, gia đình êm ấm thuận hòa! 🎉💑',
+                    date: '20/09/2026',
+                    likes: 18,
+                    created_at: '2026-09-20T10:00:00.000Z'
+                },
+                {
+                    id: 'wish-2',
+                    name: 'Hội bạn thân',
+                    presence: true,
+                    comment: 'Chúc mừng hạnh phúc người anh em Phương! Quỳnh xinh gái tuyệt vời nhất hôm nay rồi, chúc hai bạn một đời an yên, hạnh phúc viên mãn nha! 🥂❤️',
+                    date: '20/09/2026',
+                    likes: 14,
+                    created_at: '2026-09-20T11:15:00.000Z'
+                },
+                {
+                    id: 'wish-3',
+                    name: 'Thanh Thảo & Bạn bè',
+                    presence: true,
+                    comment: 'Cô dâu Phương Quỳnh xinh đẹp rạng rỡ của chúng mình! Chúc cậu và anh Phương mãi mãi ngọt ngào, cùng nhau nắm tay đi qua mọi thăng trầm của cuộc đời! 🌸✨',
+                    date: '20/09/2026',
+                    likes: 21,
+                    created_at: '2026-09-20T12:30:00.000Z'
+                },
+                {
+                    id: 'wish-4',
+                    name: 'Anh Tuấn & Minh Hạnh',
+                    presence: false,
+                    comment: 'Chúc hai em có một ngày cưới thật trọn vẹn và ý nghĩa. Hạnh phúc ngập tràn mái ấm nhỏ nhé! 💖',
+                    date: '19/09/2026',
+                    likes: 9,
+                    created_at: '2026-09-19T14:20:00.000Z'
+                }
+            ];
+        }
+
+        function saveWishes(wishes) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function escapeHtml(text) {
+            return String(text || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function loadDashboard() {
+            const wishes = getWishes();
+
+            // Stats
+            const total = wishes.length;
+            const attending = wishes.filter(w => w.presence === true).length;
+            const absent = wishes.filter(w => w.presence === false).length;
+            const totalLikes = wishes.reduce((sum, w) => sum + (w.likes || 0), 0);
+            const attendingRate = total > 0 ? Math.round((attending / total) * 100) : 0;
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-attending').innerText = attending;
+            document.getElementById('stat-absent').innerText = absent;
+            document.getElementById('stat-likes').innerText = totalLikes;
+            document.getElementById('stat-attending-rate').innerText = `${attendingRate}% tham dự`;
+
+            // Filter counts
+            document.getElementById('count-filter-all').innerText = total;
+            document.getElementById('count-filter-present').innerText = attending;
+            document.getElementById('count-filter-absent').innerText = absent;
+            document.getElementById('list-total-badge').innerText = `${total} khách mời`;
+
+            filterWishes();
+
+            // Load saved webhook URL
+            const savedWebhook = localStorage.getItem('wedding_webhook_url');
+            if (savedWebhook) {
+                document.getElementById('input-webhook-url').value = savedWebhook;
+            }
+        }
+
+        function setFilter(type, btn) {
+            currentFilter = type;
+            document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterWishes();
+        }
+
+        function filterWishes() {
+            const wishes = getWishes();
+            const keyword = document.getElementById('search-input').value.toLowerCase().trim();
+
+            const filtered = wishes.filter(w => {
+                const matchName = !keyword || (w.name && w.name.toLowerCase().includes(keyword)) || (w.comment && w.comment.toLowerCase().includes(keyword));
+                if (!matchName) return false;
+
+                if (currentFilter === 'present') return w.presence === true;
+                if (currentFilter === 'absent') return w.presence === false;
+                return true;
+            });
+
+            renderTable(filtered);
+        }
+
+        function renderTable(list) {
+            const tbody = document.getElementById('wishes-table-body');
+            const emptyState = document.getElementById('empty-state');
+
+            if (list.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.classList.remove('d-none');
+                return;
+            }
+
+            emptyState.classList.add('d-none');
+            tbody.innerHTML = list.map((w, index) => {
+                let badge = '<span class="badge bg-secondary-subtle text-secondary border rounded-pill px-2 py-1"><i class="fa-solid fa-heart me-1 text-danger"></i>Gửi lời chúc</span>';
+                if (w.presence === true) {
+                    badge = '<span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1"><i class="fa-solid fa-circle-check me-1"></i>Tham dự</span>';
+                } else if (w.presence === false) {
+                    badge = '<span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1"><i class="fa-solid fa-circle-xmark me-1"></i>Báo vắng</span>';
+                }
+
+                const firstLetter = escapeHtml(w.name).trim().charAt(0).toUpperCase();
+
+                return `
+                    <tr>
+                        <td class="ps-3 text-secondary fw-semibold">${index + 1}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-circle rounded-circle me-2 text-white d-flex align-items-center justify-content-center shadow-sm" style="background: linear-gradient(135deg, #e91e63, #9c27b0);">
+                                    ${firstLetter}
+                                </div>
+                                <div>
+                                    <strong class="d-block">${escapeHtml(w.name)}</strong>
+                                    <small class="text-secondary"><i class="fa-solid fa-heart text-danger me-1"></i>${w.likes || 1} lượt thích</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${badge}</td>
+                        <td style="max-width: 380px;">
+                            <span class="text-break" style="font-size: 0.92rem;">${escapeHtml(w.comment)}</span>
+                        </td>
+                        <td>
+                            <small class="text-secondary">${escapeHtml(w.date || 'Gần đây')}</small>
+                        </td>
+                        <td class="text-center pe-3">
+                            <button type="button" class="btn btn-outline-danger btn-sm rounded-circle shadow-sm" title="Xóa lời chúc" onclick="deleteWish('${w.id}')">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function deleteWish(id) {
+            if (!confirm('Bạn có chắc chắn muốn xóa lời chúc này khỏi danh sách?')) {
+                return;
+            }
+            let wishes = getWishes();
+            wishes = wishes.filter(w => w.id !== id);
+            saveWishes(wishes);
+            loadDashboard();
+        }
+
+        function submitManualWish() {
+            const name = document.getElementById('manual-name').value.trim();
+            const presenceVal = document.getElementById('manual-presence').value;
+            const comment = document.getElementById('manual-comment').value.trim();
+
+            if (!name || !comment) return;
+
+            let isPresent = null;
+            if (presenceVal === '1') isPresent = true;
+            if (presenceVal === '2') isPresent = false;
+
+            const wishes = getWishes();
+            const newWish = {
+                id: `wish-${Date.now()}`,
+                name: name,
+                presence: isPresent,
+                comment: comment,
+                date: new Date().toLocaleDateString('vi-VN'),
+                likes: 1,
+                created_at: new Date().toISOString()
+            };
+
+            wishes.unshift(newWish);
+            saveWishes(wishes);
+
+            document.getElementById('form-manual-add').reset();
+            const modalEl = document.getElementById('modalAddWish');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
+
+            loadDashboard();
+            alert('Đã thêm khách mời và lời chúc thành công!');
+        }
+
+        function exportToCSV() {
+            const wishes = getWishes();
+            if (wishes.length === 0) {
+                alert('Không có dữ liệu lời chúc để xuất file.');
+                return;
+            }
+
+            const rows = [
+                ['STT', 'Họ và tên', 'Trạng thái RSVP', 'Nội dung lời chúc', 'Lượt thích', 'Thời gian gửi']
+            ];
+
+            wishes.forEach((w, i) => {
+                let status = 'Chỉ gửi lời chúc';
+                if (w.presence === true) status = 'Chắc chắn tham dự';
+                if (w.presence === false) status = 'Báo vắng mặt';
+
+                rows.push([
+                    i + 1,
+                    `"${(w.name || '').replace(/"/g, '""')}"`,
+                    `"${status}"`,
+                    `"${(w.comment || '').replace(/"/g, '""')}"`,
+                    w.likes || 1,
+                    `"${w.date || ''}"`
+                ]);
+            });
+
+            const csvContent = '\uFEFF' + rows.map(e => e.join(',')).join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'Danh_sach_RSVP_Dam_cuoi_Phuong_Quynh.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function saveWebhookUrl() {
+            const url = document.getElementById('input-webhook-url').value.trim();
+            localStorage.setItem('wedding_webhook_url', url);
+            const status = document.getElementById('webhook-status');
+            status.classList.remove('d-none');
+            setTimeout(() => status.classList.add('d-none'), 3500);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', next);
+            localStorage.setItem('dashboard_theme', next);
+        }
+
+        // ── Auth ──────────────────────────────────────────────────────────
+        const ADMIN_USERS = [
+            { username: 'admin', password: 'phuong@12345' },
+            { username: 'phuong', password: 'phuong@12345' },
+        ];
+        const AUTH_KEY = 'wedding_admin_authed';
+
+        function doLogin() {
+            const u = (document.getElementById('login-username').value || '').trim();
+            const p = (document.getElementById('login-password').value || '');
+            const matched = ADMIN_USERS.find((a) => a.username === u && a.password === p);
+            if (matched) {
+                sessionStorage.setItem(AUTH_KEY, '1');
+                showDashboard();
+            } else {
+                const err = document.getElementById('login-error');
+                err.classList.remove('d-none');
+                document.getElementById('login-password').value = '';
+                setTimeout(() => err.classList.add('d-none'), 3500);
+            }
+        }
+
+        function doLogout() {
+            sessionStorage.removeItem(AUTH_KEY);
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-overlay').classList.remove('d-none');
+            document.getElementById('dashboard-content').classList.add('d-none');
+        }
+
+        function toggleLoginPwd(btn) {
+            const inp = document.getElementById('login-password');
+            const isHidden = inp.type === 'password';
+            inp.type = isHidden ? 'text' : 'password';
+            btn.querySelector('i').className = isHidden ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+        }
+
+        function showDashboard() {
+            document.getElementById('login-overlay').classList.add('d-none');
+            document.getElementById('dashboard-content').classList.remove('d-none');
+            loadDashboard();
+        }
+        // ── End Auth ──────────────────────────────────────────────────────
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('dashboard_theme') || 'auto';
+            if (savedTheme !== 'auto') {
+                document.documentElement.setAttribute('data-bs-theme', savedTheme);
+            }
+            if (sessionStorage.getItem(AUTH_KEY) === '1') {
+                showDashboard();
+            }
+            // Focus username field
+            setTimeout(() => document.getElementById('login-username')?.focus(), 200);
+        });
+    </script>
+
+    </div><!-- /#dashboard-content -->
 </body>
 
 </html>

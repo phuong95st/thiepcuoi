@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /dist/
+
+Sitemap: https://phuongquynh.vercel.app/sitemap.xml

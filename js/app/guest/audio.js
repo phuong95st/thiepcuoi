@@ -25,11 +25,19 @@ export const audio = (() => {
         let audioEl = null;
 
         try {
-            audioEl = new Audio(await cache('audio').withForceCache().get(url, progress.getAbort()));
+            let audioSrc = url;
+            try {
+                audioSrc = await cache('audio').withForceCache().get(url, progress.getAbort());
+            } catch {
+                audioSrc = url;
+            }
+
+            audioEl = new Audio(audioSrc);
             audioEl.loop = true;
             audioEl.muted = false;
             audioEl.autoplay = false;
             audioEl.controls = false;
+            audioEl.volume = 1.0;
 
             progress.complete('audio');
         } catch {

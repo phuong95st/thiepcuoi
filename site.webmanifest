@@ -1,0 +1,32 @@
+{
+  "name": "Thiệp Cưới Hữu Phương & Phương Quỳnh",
+  "short_name": "P&Q Wedding",
+  "description": "Thiệp cưới online – Lễ Ăn Hỏi 19/11/2026 & Tiệc Cưới 20/11/2026 tại Sơn Tây, Hà Nội",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#881337",
+  "theme_color": "#881337",
+  "lang": "vi",
+  "icons": [
+    {
+      "src": "./assets/images/icon-192x192.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/images/icon-512x512.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/images/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

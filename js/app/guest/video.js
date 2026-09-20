@@ -1,14 +1,6 @@
 import { progress } from './progress.js';
-import { util } from '../../common/util.js';
-import { cache } from '../../connection/cache.js';
-import { HTTP_GET, request, HTTP_STATUS_OK, HTTP_STATUS_PARTIAL_CONTENT } from '../../connection/request.js';
 
 export const video = (() => {
-
-    /**
-     * @type {ReturnType<typeof cache>|null}
-     */
-    let c = null;
 
     /**
      * @returns {Promise<void>}
@@ -28,101 +20,49 @@ export const video = (() => {
         }
 
         const vid = document.createElement('video');
-        vid.className = wrap.getAttribute('data-vid-class');
+        vid.className = wrap.getAttribute('data-vid-class') || 'w-100 rounded-4 shadow-sm m-0 p-0';
+        vid.controls = true;
+        vid.playsInline = true;
         vid.loop = true;
         vid.muted = true;
-        vid.controls = false;
-        vid.autoplay = false;
-        vid.playsInline = true;
+        vid.autoplay = true;
         vid.preload = 'metadata';
+        vid.poster = './assets/images/video-thumbnail.webp';
+        vid.src = src;
 
-        const observer = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting ? vid.play() : vid.pause()));
-
-        /**
-         * @param {Blob} b
-         * @returns {void}
-         */
-        const prepareVideo = (b) => {
-            vid.preload = 'auto';
-            vid.controls = true;
-            vid.disableRemotePlayback = true;
-            vid.disablePictureInPicture = true;
-            vid.controlsList = 'noremoteplayback nodownload noplaybackrate';
-            vid.src = URL.createObjectURL(b);
-        };
-
-        /**
-         * @returns {Promise<Response>}
-         */
-        const fetchBasic = () => {
-            const bar = document.getElementById('progress-bar-video-love-stroy');
-            const inf = document.getElementById('progress-info-video-love-stroy');
-
-            return request(HTTP_GET, src).withNoBody().default({ 'Range': 'bytes=0-1' }).then((res) => {
-
-                if (res.status === HTTP_STATUS_OK) {
-                    vid.preload = 'none';
-                    vid.src = util.escapeHtml(src);
-                    wrap.appendChild(vid);
-
-                    return Promise.resolve();
+        // Auto-play when visible, pause when hidden
+        const observer = new IntersectionObserver((es) => {
+            es.forEach((e) => {
+                if (e.isIntersecting) {
+                    vid.play().catch(() => null);
+                } else if (!vid.paused) {
+                    vid.pause();
                 }
-
-                if (res.status !== HTTP_STATUS_PARTIAL_CONTENT) {
-                    throw new Error('failed to fetch video');
-                }
-
-                vid.addEventListener('error', () => progress.invalid('video'));
-                const loaded = new Promise((r) => vid.addEventListener('loadedmetadata', r, { once: true }));
-
-                vid.src = util.escapeHtml(src);
-                wrap.appendChild(vid);
-
-                return loaded;
-            }).then(() => {
-                vid.pause();
-                vid.currentTime = 0;
-                progress.complete('video');
-
-                const height = vid.getBoundingClientRect().width * (vid.videoHeight / vid.videoWidth);
-                vid.style.height = `${height}px`;
-                wrap.style.height = `${height}px`;
-
-                return request(HTTP_GET, src).withRetry().withProgressFunc((a, b) => {
-                    const result = Number((a / b) * 100).toFixed(0) + '%';
-
-                    bar.style.width = result;
-                    inf.innerText = result;
-                }).default();
-            }).then((res) => res.clone().blob().then((b) => {
-                const loaded = new Promise((r) => vid.addEventListener('loadedmetadata', r, { once: true }));
-                prepareVideo(b);
-                vid.load();
-                return loaded.then(() => res);
-            })).catch((err) => {
-                bar.style.backgroundColor = 'red';
-                inf.innerText = `Error loading video`;
-                console.error(err);
             });
-        };
+        }, { threshold: 0.25 });
 
-        return c.has(src).then((res) => {
-            if (!res) {
-                return c.del(src).then(fetchBasic).then((r) => c.set(src, r));
-            }
+        wrap.appendChild(vid);
+        observer.observe(vid);
 
-            return res.blob().then((b) => {
-                const loaded = new Promise((r) => vid.addEventListener('loadedmetadata', r, { once: true }));
-                prepareVideo(b);
-                wrap.appendChild(vid);
-                return loaded.then(() => progress.complete('video'));
-            });
-        }).then(() => {
-            observer.observe(vid);
-            vid.style.removeProperty('height');
-            wrap.style.removeProperty('height');
+        const onReady = () => {
+            progress.complete('video');
             document.getElementById('video-love-stroy-loading')?.remove();
-        });
+            // Try to autoplay; browsers require muted for autoplay
+            vid.play().catch(() => null);
+        };
+
+        vid.addEventListener('loadedmetadata', onReady, { once: true });
+        vid.addEventListener('canplay', onReady, { once: true });
+        vid.addEventListener('error', () => {
+            progress.complete('video');
+            document.getElementById('video-love-stroy-loading')?.remove();
+        }, { once: true });
+
+        if (vid.readyState >= 1) {
+            onReady();
+        }
+
+        return Promise.resolve();
     };
 
     /**
@@ -130,7 +70,6 @@ export const video = (() => {
      */
     const init = () => {
         progress.add();
-        c = cache('video').withForceCache();
 
         return {
             load,
