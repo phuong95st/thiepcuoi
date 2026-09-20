@@ -14,7 +14,7 @@
         "lint:css": "stylelint css",
         "lint:html": "htmlhint index.html dashboard.html",
         "dev": "node scripts/esbuild-runner.js js/*.js --bundle --outdir=dist --servedir=. --serve=8080",
-        "build": "node scripts/esbuild-runner.js js/*.js --bundle --minify --outdir=dist",
+        "build": "esbuild js/guest.js js/admin.js --bundle --minify --outdir=dist",
         "build:public": "npm run build && node scripts/build-public.js"
     },
     "dependencies": {
