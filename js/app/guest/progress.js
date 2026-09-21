@@ -80,6 +80,14 @@ export const progress = (() => {
         bar = document.getElementById('progress-bar');
         info.classList.remove('d-none');
         cancelProgress = new Promise((res) => document.addEventListener('undangan.progress.invalid', res));
+
+        window.setTimeout(() => {
+            if (valid && loaded < total) {
+                while (loaded < total) {
+                    complete('timeout', true);
+                }
+            }
+        }, 25000);
     };
 
     return {

@@ -35,6 +35,34 @@ export const util = (() => {
         { name: 'Chrome OS', regex: /CrOS/i },
     ];
 
+    const inAppBrowsers = /Zalo|ZaloTheme|zaBrowser|FBAN|FBAV|Instagram|Line\/|MicroMessenger|Twitter|Snapchat|LinkedInApp/i;
+
+    /**
+     * @returns {boolean}
+     */
+    const isIOS = () => (
+        /iPhone|iPad|iPod/i.test(navigator.userAgent)
+        || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+    );
+
+    /**
+     * Zalo, Facebook, Messenger, WeChat, etc.
+     * @returns {boolean}
+     */
+    const isInAppBrowser = () => inAppBrowsers.test(navigator.userAgent);
+
+    /**
+     * Blob URLs from Cache API often fail in in-app WebViews.
+     * @returns {boolean}
+     */
+    const shouldBypassBlobCache = () => isInAppBrowser() || isIOS();
+
+    /**
+     * @param {string} input
+     * @returns {string}
+     */
+    const resolveUrl = (input) => new URL(input, window.location.href).href;
+
     /**
      * @param {string} unsafe
      * @returns {string}
@@ -297,5 +325,9 @@ export const util = (() => {
         changeOpacity,
         getGMTOffset,
         convertMarkdownToHTML,
+        isIOS,
+        isInAppBrowser,
+        shouldBypassBlobCache,
+        resolveUrl,
     };
 })();

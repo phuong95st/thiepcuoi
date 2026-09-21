@@ -1,4 +1,5 @@
 import { progress } from './progress.js';
+import { util } from '../../common/util.js';
 
 export const video = (() => {
 
@@ -27,8 +28,8 @@ export const video = (() => {
         vid.muted = true;
         vid.autoplay = true;
         vid.preload = 'metadata';
-        vid.poster = './assets/images/video-thumbnail.webp';
-        vid.src = src;
+        vid.poster = util.resolveUrl('./assets/images/video-thumbnail.webp');
+        vid.src = util.resolveUrl(src);
 
         // Auto-play when visible, pause when hidden
         const observer = new IntersectionObserver((es) => {

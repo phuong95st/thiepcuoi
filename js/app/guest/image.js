@@ -1,5 +1,6 @@
 import { progress } from './progress.js';
 import { cache } from '../../connection/cache.js';
+import { util } from '../../common/util.js';
 
 export const image = (() => {
 
@@ -63,7 +64,7 @@ export const image = (() => {
             el.classList.remove('opacity-0');
             progress.complete('image');
         };
-        el.src = directSrc;
+        el.src = util.resolveUrl(directSrc);
     };
 
     /**
@@ -71,8 +72,19 @@ export const image = (() => {
      * @returns {void}
      */
     const getByFetch = (el) => {
+        const dataSrc = el.getAttribute('data-src');
+        if (!dataSrc) {
+            progress.complete('image');
+            return;
+        }
+
+        if (util.shouldBypassBlobCache()) {
+            fallbackImage(el);
+            return;
+        }
+
         urlCache.push({
-            url: el.getAttribute('data-src'),
+            url: util.resolveUrl(dataSrc),
             res: (url) => appendImage(el, url).catch(() => fallbackImage(el)),
             rej: (err) => {
                 console.error(err);

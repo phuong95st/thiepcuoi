@@ -1,4 +1,5 @@
 import { request, cacheWrapper, HTTP_GET } from './request.js';
+import { util } from '../common/util.js';
 
 export const cache = (cacheName) => {
 
@@ -52,27 +53,33 @@ export const cache = (cacheName) => {
      * @returns {Promise<string>}
      */
     const get = (input, cancel = null) => {
-        if (objectUrls.has(input)) {
-            return Promise.resolve(objectUrls.get(input));
+        const resolved = util.resolveUrl(input);
+
+        if (util.shouldBypassBlobCache()) {
+            return Promise.resolve(resolved);
         }
 
-        if (inFlightRequests.has(input)) {
-            return inFlightRequests.get(input);
+        if (objectUrls.has(resolved)) {
+            return Promise.resolve(objectUrls.get(resolved));
+        }
+
+        if (inFlightRequests.has(resolved)) {
+            return inFlightRequests.get(resolved);
         }
 
         /**
          * @returns {Promise<Response>}
          */
-        const fetchPut = () => request(HTTP_GET, input).withCancel(cancel).withRetry().default();
+        const fetchPut = () => request(HTTP_GET, resolved).withCancel(cancel).withRetry().default();
 
-        const inflightPromise = has(input)
-            .then((res) => res ? Promise.resolve(res) : del(input).then(fetchPut).then((r) => set(input, r)))
+        const inflightPromise = has(resolved)
+            .then((res) => res ? Promise.resolve(res) : del(resolved).then(fetchPut).then((r) => set(resolved, r)))
             .then((r) => r.blob())
-            .then((b) => objectUrls.set(input, URL.createObjectURL(b)))
-            .then(() => objectUrls.get(input))
-            .finally(() => inFlightRequests.delete(input));
+            .then((b) => objectUrls.set(resolved, URL.createObjectURL(b)))
+            .then(() => objectUrls.get(resolved))
+            .finally(() => inFlightRequests.delete(resolved));
 
-        inFlightRequests.set(input, inflightPromise);
+        inFlightRequests.set(resolved, inflightPromise);
         return inflightPromise;
     };
 

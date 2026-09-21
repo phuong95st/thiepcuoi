@@ -1,18 +1,11 @@
 import { progress } from './progress.js';
 import { cache } from '../../connection/cache.js';
+import { util } from '../../common/util.js';
 
 export const audio = (() => {
 
     const statePlay = '<i class="fa-solid fa-circle-pause spin-button"></i>';
     const statePause = '<i class="fa-solid fa-circle-play"></i>';
-
-    /**
-     * @returns {boolean}
-     */
-    const isIOS = () => (
-        /iPhone|iPad|iPod/i.test(navigator.userAgent)
-        || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-    );
 
     /**
      * @param {boolean} [playOnOpen=true]
@@ -26,7 +19,7 @@ export const audio = (() => {
             return;
         }
 
-        const url = new URL(rawUrl, window.location.href).href;
+        const url = util.resolveUrl(rawUrl);
 
         /**
          * @type {HTMLAudioElement|null}
@@ -39,8 +32,7 @@ export const audio = (() => {
         try {
             let audioSrc = url;
 
-            // iOS Safari: blob cache can cause NotSupportedError — use direct URL
-            if (!isIOS()) {
+            if (!util.shouldBypassBlobCache()) {
                 try {
                     audioSrc = await cache('audio').withForceCache().get(url, progress.getAbort());
                 } catch {
