@@ -183,6 +183,8 @@ export const audio = (() => {
         wireControls();
 
         if (util.isInAppBrowser()) {
+            getAudioEl().preload = 'auto';
+            applySrc(url);
             progress.complete('audio');
             return;
         }
@@ -203,10 +205,6 @@ export const audio = (() => {
             progress.complete('audio', !canPlay);
         } catch {
             progress.complete('audio', true);
-        }
-
-        if (!playOnOpen) {
-            return;
         }
     };
 
