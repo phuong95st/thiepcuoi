@@ -164,6 +164,9 @@ export const guest = (() => {
         slide();
         theme.spyTop();
 
+        // Zalo/Facebook WebView: audio.play() must run in the same user gesture as this click.
+        audio.playFromGesture();
+
         document.dispatchEvent(new Event('undangan.open'));
 
         confetti.basicAnimation();
