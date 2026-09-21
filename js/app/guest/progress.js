@@ -87,7 +87,7 @@ export const progress = (() => {
                     complete('timeout', true);
                 }
             }
-        }, 25000);
+        }, 8000);
     };
 
     return {

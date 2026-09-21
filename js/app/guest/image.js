@@ -20,6 +20,44 @@ export const image = (() => {
     const urlCache = [];
 
     /**
+     * @type {WeakSet<HTMLImageElement>}
+     */
+    const completed = new WeakSet();
+
+    const IMAGE_TIMEOUT_MS = 6000;
+
+    /**
+     * @param {HTMLImageElement} el
+     * @returns {void}
+     */
+    const markComplete = (el) => {
+        if (completed.has(el)) {
+            return;
+        }
+        completed.add(el);
+        progress.complete('image');
+    };
+
+    /**
+     * @param {HTMLImageElement} el
+     * @returns {void}
+     */
+    const armTimeout = (el) => {
+        window.setTimeout(() => markComplete(el), IMAGE_TIMEOUT_MS);
+    };
+
+    /**
+     * @param {HTMLImageElement} el
+     * @returns {void}
+     */
+    const prepareElement = (el) => {
+        el.loading = 'eager';
+        if (util.shouldBypassBlobCache()) {
+            el.decoding = 'async';
+        }
+    };
+
+    /**
      * @param {string} src 
      * @returns {Promise<HTMLImageElement>}
      */
@@ -42,7 +80,7 @@ export const image = (() => {
         el.src = img.src;
         img.remove();
 
-        progress.complete('image');
+        markComplete(el);
     });
 
     /**
@@ -52,17 +90,19 @@ export const image = (() => {
     const fallbackImage = (el) => {
         const directSrc = el.getAttribute('data-src');
         if (!directSrc) {
-            progress.complete('image');
+            markComplete(el);
             return;
         }
 
+        prepareElement(el);
         el.removeAttribute('data-src');
-        el.onerror = () => progress.complete('image');
+        armTimeout(el);
+        el.onerror = () => markComplete(el);
         el.onload = () => {
             el.width = el.naturalWidth;
             el.height = el.naturalHeight;
             el.classList.remove('opacity-0');
-            progress.complete('image');
+            markComplete(el);
         };
         el.src = util.resolveUrl(directSrc);
     };
@@ -74,9 +114,11 @@ export const image = (() => {
     const getByFetch = (el) => {
         const dataSrc = el.getAttribute('data-src');
         if (!dataSrc) {
-            progress.complete('image');
+            markComplete(el);
             return;
         }
+
+        prepareElement(el);
 
         if (util.shouldBypassBlobCache()) {
             fallbackImage(el);
@@ -98,17 +140,32 @@ export const image = (() => {
      * @returns {void}
      */
     const getByDefault = (el) => {
-        el.onerror = () => fallbackImage(el);
+        prepareElement(el);
+        armTimeout(el);
+
+        el.onerror = () => {
+            if (el.hasAttribute('data-src')) {
+                fallbackImage(el);
+                return;
+            }
+            markComplete(el);
+        };
+
         el.onload = () => {
             el.width = el.naturalWidth;
             el.height = el.naturalHeight;
-            progress.complete('image');
+            el.classList.remove('opacity-0');
+            markComplete(el);
         };
 
         if (el.complete && el.naturalWidth !== 0 && el.naturalHeight !== 0) {
-            progress.complete('image');
+            markComplete(el);
         } else if (el.complete) {
-            fallbackImage(el);
+            if (el.hasAttribute('data-src')) {
+                fallbackImage(el);
+            } else {
+                markComplete(el);
+            }
         }
     };
 
